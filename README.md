@@ -7,7 +7,7 @@ This course serves as an introduction to modern web application development with
 # Course Content
 - [x] Part 0 - Fundamentals of Web apps
 
-- [ ] Part 1 - [Introduction to React](https://fullstackopen.com/en/part1)
+- [x] Part 1 - [Introduction to React](https://fullstackopen.com/en/part1)
 
 - [ ] Part 2 - Communicating with server
 
