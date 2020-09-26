@@ -1,3 +1,4 @@
-Solutions of part 1 exercises to this folder, one app per folder
+# Solutions Part 1 - Introduction To React
+In this part, we will familiarize ourselves with the React-library.
 
-eg. the project unicafe for exercises 1.6.-1.11 as folder unicafe
+Part 1 course material and tasks can be found [here.](https://fullstackopen.com/en/part1)
