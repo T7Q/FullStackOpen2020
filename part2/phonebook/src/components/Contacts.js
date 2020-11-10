@@ -1,11 +1,11 @@
 import React from 'react';
 import OneContact from './OneContact';
 
-const Contacts = ({ persons, filter }) => {
+const Contacts = ({ persons, filtered }) => {
     const filteredPersons =
-        filter === ''
+        filtered === ''
             ? persons
-            : persons.filter((person) => person.name.toLowerCase().includes(filter.toLowerCase()));
+            : persons.filter((person) => person.name.toLowerCase().includes(filtered.toLowerCase()));
 
     return (
         <div>
