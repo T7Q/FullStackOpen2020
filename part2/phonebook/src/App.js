@@ -6,9 +6,14 @@ const App = () => {
 
     const addContact = (event) => {
         event.preventDefault();
-        const person = { name: newName };
-        setPersons(persons.concat(person));
-        setNewName('');
+        const newPerson = { name: newName };
+
+        if (persons.filter(person => person.name === newPerson.name).length > 0) {
+          alert(newPerson.name + " is already added to phonebook");
+        } else {
+          setPersons(persons.concat(newPerson));
+          setNewName('');
+        }
     };
 
     const handleChange = (event) => {
