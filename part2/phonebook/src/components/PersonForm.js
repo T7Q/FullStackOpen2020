@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import services from '../services/services';
 
-const PersonForm = ({ persons, setPersons }) => {
+const PersonForm = ({ persons, setPersons, snackbar }) => {
     const [newName, setNewName] = useState('');
     const [newNumber, setNewNumber] = useState('');
 
@@ -10,7 +10,7 @@ const PersonForm = ({ persons, setPersons }) => {
         event.preventDefault();
         const newPerson = { name: newName, number: newNumber };
         if (newPerson.name === '' || newPerson.number === '') {
-            alert('Please enter name and number');
+            snackbar('Please enter name and number', 'error');
         } else if (persons.filter((person) => person.name === newPerson.name).length > 0) {
             if (
                 window.confirm(
@@ -28,9 +28,10 @@ const PersonForm = ({ persons, setPersons }) => {
                         );
                         setNewName('');
                         setNewNumber('');
+                        snackbar(`${sameContact.name} number was successfully updated`, 'success');
                     })
                     .catch(() => {
-                        alert('Contact does not exist');
+                        snackbar('Contact does not exist', 'error');
                     });
             }
         } else {
@@ -38,6 +39,7 @@ const PersonForm = ({ persons, setPersons }) => {
                 setPersons(persons.concat(newPerson));
                 setNewName('');
                 setNewNumber('');
+                snackbar(`Added ${newPerson.name}`, 'success');
             });
         }
     };
