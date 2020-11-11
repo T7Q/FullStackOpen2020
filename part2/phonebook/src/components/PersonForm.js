@@ -31,12 +31,12 @@ const PersonForm = ({ persons, setPersons, snackbar }) => {
                         snackbar(`${sameContact.name} number was successfully updated`, 'success');
                     })
                     .catch(() => {
-                        snackbar('Contact does not exist', 'error');
+                        snackbar(`${sameContact.name} does not exist`, 'error');
                     });
             }
         } else {
             services.addPerson(newPerson).then((response) => {
-                setPersons(persons.concat(newPerson));
+                setPersons(persons.concat(response));
                 setNewName('');
                 setNewNumber('');
                 snackbar(`Added ${newPerson.name}`, 'success');

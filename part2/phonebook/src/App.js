@@ -9,7 +9,7 @@ import Notification from './components/Notification';
 const App = () => {
     const [persons, setPersons] = useState([]);
     const [filtered, setFilter] = useState('');
-    const [notification, setNotification] = useState({text: '', type: ''});
+    const [notification, setNotification] = useState({ text: '', type: '' });
 
     useEffect(() => {
         services.getAll().then((response) => {
@@ -22,9 +22,9 @@ const App = () => {
     };
 
     const snackbar = (newText, newType) => {
-        setNotification({text: newText, type: newType});
-        setTimeout(() => setNotification({text: '', type: ''}), 3000);
-    }
+        setNotification({ text: newText, type: newType });
+        setTimeout(() => setNotification({ text: '', type: '' }), 3000);
+    };
 
     return (
         <div>
@@ -32,13 +32,14 @@ const App = () => {
             <Notification notification={notification} />
             <Filter filtered={filtered} handleFilter={handleFilter} />
             <Title title="add a new" />
-            <PersonForm
+            <PersonForm persons={persons} setPersons={setPersons} snackbar={snackbar} />
+            <Title title="Numbers" />
+            <Contacts
                 persons={persons}
+                filtered={filtered}
                 setPersons={setPersons}
                 snackbar={snackbar}
             />
-            <Title title="Numbers" />
-            <Contacts persons={persons} filtered={filtered} setPersons={setPersons} />
         </div>
     );
 };

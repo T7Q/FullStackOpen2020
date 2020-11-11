@@ -2,16 +2,17 @@ import React from 'react';
 
 import services from '../services/services';
 
-const OneContact = ({ persons, person, setPersons }) => {
+const OneContact = ({ persons, person, setPersons, snackbar }) => {
     const handleDelete = (id) => {
         if (window.confirm(`Delete ${person.name}?`)) {
             services
                 .deletePerson(id)
                 .then(() => {
                     setPersons(persons.filter((person) => person.id !== id));
+                    snackbar(`${person.name} has been successfully removed from server`, 'success');
                 })
                 .catch(() => {
-                    alert('record does not exist');
+                    snackbar(`${person.name} has been already removed from server`, 'error');
                 });
         };
     };
