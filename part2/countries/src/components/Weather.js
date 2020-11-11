@@ -16,7 +16,7 @@ const Weather = ({ capital }) => {
         <div>
             <h2>Weather in {capital} </h2>
             <p>
-                <strong>temperature</strong> {weather.temperature} Celsius{' '}
+                <strong>temperature: </strong> {weather.temperature} Celsius{' '}
             </p>
             <img
                 src={weather.weather_icons}
