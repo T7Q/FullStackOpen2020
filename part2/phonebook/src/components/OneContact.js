@@ -1,6 +1,6 @@
 import React from 'react';
 
-import services from '../services/services';
+import services from '../services/contactService';
 
 const OneContact = ({ persons, person, setPersons, snackbar }) => {
     const handleDelete = (id) => {
@@ -8,11 +8,13 @@ const OneContact = ({ persons, person, setPersons, snackbar }) => {
             services
                 .deletePerson(id)
                 .then(() => {
-                    setPersons(persons.filter((person) => person.id !== id));
                     snackbar(`${person.name} has been successfully removed from server`, 'success');
                 })
                 .catch(() => {
                     snackbar(`${person.name} has been already removed from server`, 'error');
+                })
+                .finally(() => {
+                    setPersons(persons.filter((person) => person.id !== id));
                 });
         };
     };

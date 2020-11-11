@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import services from './services/services';
+
+import services from './services/contactService';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Contacts from './components/Contacts';

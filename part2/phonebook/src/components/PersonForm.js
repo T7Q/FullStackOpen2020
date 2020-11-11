@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import services from '../services/services';
+import services from '../services/contactService';
 
 const PersonForm = ({ persons, setPersons, snackbar }) => {
     const [newName, setNewName] = useState('');
@@ -31,6 +31,7 @@ const PersonForm = ({ persons, setPersons, snackbar }) => {
                         snackbar(`${sameContact.name} number was successfully updated`, 'success');
                     })
                     .catch(() => {
+                        setPersons(persons.filter(person => person.id !== sameContact.id));
                         snackbar(`${sameContact.name} does not exist`, 'error');
                     });
             }
