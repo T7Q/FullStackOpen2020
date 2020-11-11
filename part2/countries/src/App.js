@@ -24,10 +24,21 @@ const App = () => {
                   countries.name.toLowerCase().includes(filtered.toLowerCase())
               );
 
+    const handleShow = (country) => {
+        setFilter(country);
+    };
+
     return (
         <div>
             <Filter filtered={filtered} handleFilter={handleFilter} />
-            <Output filteredCountries={filteredCountries} filtered={filtered} />
+            {filtered === '' ? (
+                ''
+            ) : (
+                <Output
+                    filteredCountries={filteredCountries}
+                    handleShow={handleShow}
+                />
+            )}
         </div>
     );
 };

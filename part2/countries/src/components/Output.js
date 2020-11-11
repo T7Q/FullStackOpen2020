@@ -3,7 +3,7 @@ import React from 'react';
 import Countries from './Countries';
 import CountryProfile from './CountryProfile';
 
-const Output = ({ filteredCountries, filtered }) => {
+const Output = ({ filteredCountries, handleShow }) => {
     return (
         <div>
             {filteredCountries.length > 10 ? (
@@ -11,7 +11,7 @@ const Output = ({ filteredCountries, filtered }) => {
             ) : filteredCountries.length === 1 ? (
                 <CountryProfile country={filteredCountries[0]} />
             ) : (
-                <Countries countries={filteredCountries} filtered={filtered} />
+                <Countries countries={filteredCountries} handleShow={handleShow}/>
             )}
         </div>
     );
