@@ -9,9 +9,30 @@ const PersonForm = ({ persons, setPersons }) => {
     const addContact = (event) => {
         event.preventDefault();
         const newPerson = { name: newName, number: newNumber };
-
-        if (persons.filter((person) => person.name === newPerson.name).length > 0) {
-            alert(newPerson.name + ' is already added to phonebook');
+        if (newPerson.name === '' || newPerson.number === '') {
+            alert('Please enter name and number');
+        } else if (persons.filter((person) => person.name === newPerson.name).length > 0) {
+            if (
+                window.confirm(
+                    `${newPerson.name} already added to phonebook, replace the old number with a new one?`
+                )
+            ) {
+                const sameContact = persons.filter((person) => person.name === newName)[0];
+                services
+                    .updateContact({ ...sameContact, number: newPerson.number })
+                    .then((response) => {
+                        setPersons(
+                            persons.map((person) =>
+                                person.id === sameContact.id ? response : person
+                            )
+                        );
+                        setNewName('');
+                        setNewNumber('');
+                    })
+                    .catch(() => {
+                        alert('Contact does not exist');
+                    });
+            }
         } else {
             services.addPerson(newPerson).then((response) => {
                 setPersons(persons.concat(newPerson));
