@@ -1,9 +1,24 @@
 import React from 'react';
 
-const OneContact = ({ person }) => {
+import services from '../services/services';
+
+const OneContact = ({ persons, person, setPersons }) => {
+    const handleDelete = (id) => {
+        if (window.confirm(`Delete ${person.name}?`)) {
+            services
+                .deletePerson(id)
+                .then(() => {
+                    setPersons(persons.filter((person) => person.id !== id));
+                })
+                .catch(() => {
+                    alert('record does not exist');
+                });
+        };
+    };
     return (
         <div>
             {person.name} {person.number}
+            <button onClick={() => handleDelete(person.id)}>delete</button>
         </div>
     );
 };

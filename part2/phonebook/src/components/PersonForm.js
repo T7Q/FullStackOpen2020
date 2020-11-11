@@ -1,5 +1,6 @@
-import axios from 'axios';
 import React, { useState } from 'react';
+
+import services from '../services/services';
 
 const PersonForm = ({ persons, setPersons }) => {
     const [newName, setNewName] = useState('');
@@ -12,12 +13,11 @@ const PersonForm = ({ persons, setPersons }) => {
         if (persons.filter((person) => person.name === newPerson.name).length > 0) {
             alert(newPerson.name + ' is already added to phonebook');
         } else {
-            axios.post('http://localhost:3001/persons', newPerson).then((response) => {
-                setPersons(persons.concat(response.data));
+            services.addPerson(newPerson).then((response) => {
+                setPersons(persons.concat(newPerson));
+                setNewName('');
+                setNewNumber('');
             });
-            setPersons(persons.concat(newPerson));
-            setNewName('');
-            setNewNumber('');
         }
     };
 
