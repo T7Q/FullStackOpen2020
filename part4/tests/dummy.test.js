@@ -42,7 +42,7 @@ describe('total likes', () => {
       url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
       likes: 10,
       __v: 0,
-    }
+    },
   ]
 
   const empty_list = []
@@ -61,7 +61,11 @@ describe('total likes', () => {
   })
   test('favorite blog post', () => {
     const result = listHelper.favoriteBlog(listWithManyBlogs)
-    expect(result).toEqual(listWithManyBlogs[2]);
-  });
-
+    expect(result).toEqual(listWithManyBlogs[2])
+  })
+  test('author with most blogs', () => {
+    const result = listHelper.mostBlogs(listWithManyBlogs)
+    const expected = { author: 'Edsger W. Dijkstra', blogs: 2 }
+    expect(result).toEqual(expected)
+  })
 })
