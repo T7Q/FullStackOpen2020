@@ -9,7 +9,7 @@ This course serves as an introduction to modern web application development with
 
 - [x] Part 1 - [Introduction to React](https://fullstackopen.com/en/part1)
 
-- [ ] Part 2 - Communicating with server
+- [x] Part 2 - Communicating with server
 
 - [ ] Part 3 - Programming a server with NodeJS and Express
 
