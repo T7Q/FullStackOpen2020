@@ -59,4 +59,9 @@ describe('total likes', () => {
     const result = listHelper.totalLikes(listWithManyBlogs)
     expect(result).toBe(20)
   })
+  test('favorite blog post', () => {
+    const result = listHelper.favoriteBlog(listWithManyBlogs)
+    expect(result).toEqual(listWithManyBlogs[2]);
+  });
+
 })
