@@ -1,3 +1,4 @@
+const { TestScheduler } = require('jest')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
@@ -46,6 +47,11 @@ test('blogs are returned as json', async () => {
 test('correct number of blogs are returned', async () => {
   const response = await api.get('/api/blogs')
   expect(response.body.length).toBe(2)
+})
+
+test('unique identifier property of the blog posts', async () => {
+  const response = await api.get('/api/blogs')
+  expect(response.body[0].id).toBeDefined()
 })
 
 afterAll(() => {
