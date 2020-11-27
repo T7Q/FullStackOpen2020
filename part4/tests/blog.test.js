@@ -60,6 +60,7 @@ test('request creates a new blog post', async () => {
   expect(response.body.length).toBe(testBlogs.length + 1)
   expect(response.body).toContainEqual(expect.objectContaining(newPost))
 })
+
 test('likes property set to 0 if missing', async () => {
   const newPost = {
     title: 'Hello world',
@@ -70,6 +71,15 @@ test('likes property set to 0 if missing', async () => {
   const savedPost = await api.post('/api/blogs').send(newPost)
 
   expect(savedPost.body).toHaveProperty('likes', 0)
+})
+
+test('adding blog with missing title or url returns status 400', async () => {
+  const postWithoutUrl = {
+    title: 'Hello world',
+    author: 'Joe Doe',
+  }
+
+  const temp = await api.post('/api/blogs').send(postWithoutUrl)
 })
 
 afterAll(() => {
