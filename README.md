@@ -11,7 +11,7 @@ This course serves as an introduction to modern web application development with
 
 - [x] Part 2 - Communicating with server
 
-- [ ] Part 3 - Programming a server with NodeJS and Express
+- [x] Part 3 - Programming a server with NodeJS and Express
 
 - [ ] Part 4 - Testing Express servers, user administration
 
