@@ -96,6 +96,23 @@ test('can delete existing post', async () => {
   expect(postDoesNotExist).not.toBeDefined()
 })
 
+test('existing post can be updated', async () => {
+  const blogsBefore = await api.get('/api/blogs')
+  const blogToUpdate = blogsBefore.body[0]
+  blogToUpdate.likes = 1000
+
+  await api.put(`/api/blogs/${blogToUpdate.id}`).send(blogToUpdate).expect(200)
+
+  const blogsAfter = await api.get('/api/blogs')
+
+  const after = blogsAfter.body
+  const updatedBlog = await after.find((blog) => blog.id === blogToUpdate.id)
+  expect(updatedBlog.title).toEqual(blogToUpdate.title)
+  expect(updatedBlog.author).toEqual(blogToUpdate.author)
+  expect(updatedBlog.url).toEqual(blogToUpdate.url)
+  expect(updatedBlog.likes).toEqual(blogToUpdate.likes)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
