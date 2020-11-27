@@ -82,6 +82,20 @@ test('adding blog with missing title or url returns status 400', async () => {
   const temp = await api.post('/api/blogs').send(postWithoutUrl)
 })
 
+test('can delete existing post', async () => {
+  const blogs = await api.get('/api/blogs')
+  const id = blogs.body[0].id
+
+  await api.delete(`/api/blogs/${id}`)
+
+  const updatedBlogs = await api.get('/api/blogs')
+  expect(updatedBlogs.body.length).toBe(blogs.body.length - 1)
+
+  const newBlogs = updatedBlogs.body
+  const postDoesNotExist = await newBlogs.find((post) => post.id === id)
+  expect(postDoesNotExist).not.toBeDefined()
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
