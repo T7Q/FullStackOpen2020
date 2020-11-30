@@ -127,26 +127,82 @@ describe('when there is initially one user in db', () => {
   })
 
   test('creation succeeds with a fresh username', async () => {
-    const usersAtStart = await helper.usersInDb();
+    const usersAtStart = await helper.usersInDb()
+    
 
     const newUser = {
-      username: 'myusername',
+      username: 'newuser',
       name: 'Tatiana Kuumola',
       password: 'password',
     }
 
-    await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(200)
+    await api.post('/api/users').send(newUser).expect(200)
 
-    const usersAtEnd = await helper.usersInDb();
+    const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
-
-    const usernames = usersAtEnd.map(u => u.username)
+    
+    const usernames = usersAtEnd.map((u) => u.username)
     expect(usernames).toContain(newUser.username)
   })
 
+  test('no user created if username is not provided', async () => {
+    const usersAtStart = await helper.usersInDb()
+    const newUser = {
+      name: "Jane Doe",
+      password: 'password'
+    }
+    const result = await api.post('/api/users').send(newUser).expect(400)
+    expect(result.body.error).toBeDefined
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length)
+    
+  })
+
+  test('no user created if username is less than 3 characters', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: "Me",
+      password: "password"
+    }
+
+    const result = await api.post('/api/users').send(newUser).expect(400)
+    expect(result.body.error).toBeDefined()
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length)
+  })
+
+  test('no user created if password is not provided', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: "Me",
+      name: "Jane"
+    }
+
+    const result = await api.post('/api/users').send(newUser).expect(400)
+    expect(result.body.error).toBeDefined()
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length)
+  })
+
+  test('no user created if password is less than 3 characters', async () => {
+    const usersAtStart = await helper.usersInDb()
+    console.log("BEFORE", usersAtStart, usersAtStart.length)
+    const newUser = {
+      username: "Me",
+      name: "Jane",
+      password: "12"
+    }
+
+    const result = await api.post('/api/users').send(newUser).expect(400)
+    expect(result.body.error).toBeDefined()
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length)
+  })
 })
 
 afterAll(() => {
