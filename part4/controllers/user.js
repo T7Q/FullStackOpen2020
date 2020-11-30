@@ -11,12 +11,12 @@ userRoute.post('/', async (request, response) => {
   }
 
   const saltRounds = 10
-  const passwordHash = await bcrypt.hash(body.password, saltRounds)
+  const password= await bcrypt.hash(body.password, saltRounds)
 
   const user = new User({
     username: body.username,
     name: body.name,
-    passwordHash,
+    password,
   })
 
   const savedUser = await user.save()
