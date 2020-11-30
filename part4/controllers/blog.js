@@ -1,19 +1,25 @@
 const blogRouter = require('express').Router()
+const { Mongoose } = require('mongoose')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 blogRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({})
+  const blogs = await Blog.find({}).populate('user', {username: 1, name: 1})
   response.json(blogs)
 })
 
 blogRouter.post('/', async (request, response) => {
-  if (!request.body.title || !request.body.url) {
-    response.status(400).end()
-  } else {
     const blog = new Blog(request.body)
+
+    const users = await User.find({})
+    const user = users[0]
+    blog.user = user
+
     const result = await blog.save()
+
+    user.blogs = user.blogs.concat(result)
+    await user.save()
     response.status(201).json(result)
-  }
 })
 
 blogRouter.delete('/:id', async (request, response) => {
