@@ -12,7 +12,7 @@ blogRouter.get('/', async (request, response) => {
 blogRouter.post('/', async (request, response) => {
   const blog = new Blog(request.body)
 
-  const token = rquest.token
+  const token = request.token
   const decodedToken = jwt.verify(token, process.env.SECRET)
   const user = await User.findById(decodedToken.id)
 
@@ -26,12 +26,12 @@ blogRouter.post('/', async (request, response) => {
 
   user.blogs = user.blogs.concat(result.id)
   await user.save()
-  response.status(201).json(result)
+  response.json(result)
 })
 
 blogRouter.delete('/:id', async (request, response) => {
   const token = request.token
-  const decoded = jwt.verify(token, proess.env.SECRET)
+  const decoded = jwt.verify(token, process.env.SECRET)
   const user = await User.findById(decoded.id)
 
   const blog = await Blog.findById(request.params.id)
