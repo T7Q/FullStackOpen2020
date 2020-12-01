@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
+import BlogForm from './components/BlogForm'
+import LoginForm from './components/LoginForm'
+import Toggle from './components/Toggle'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -69,60 +72,31 @@ const App = () => {
     }
   }
 
-  const loginPage = () => (
-    <div>
-      <form onSubmit={handleLogin}>
-        <div>
-          username
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          password
-          <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button type="submit">login</button>
-      </form>
-    </div>
-  )
-
-  const blogPage = () => (
-    <div>
-      <p>
-        {user.name} logged in <button onClick={logout}>logout</button>
-      </p>
-      <form onSubmit={addBlog}>
-        <div>
-          title: <input name="title" value={newBlog.title} onChange={handleAddBlog} />
-        </div>
-        <div>
-          author: <input name="author" value={newBlog.author} onChange={handleAddBlog} />
-        </div>
-        <div>
-          url: <input name="url" value={newBlog.url} onChange={handleAddBlog} />
-        </div>
-        <button type="submit">create</button>
-      </form>
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
-      ))}
-    </div>
-  )
-
   return (
     <div>
       <h2> {user === null ? 'Log in to application' : 'blogs'} </h2>
       <Notification notification={notification} />
-      {user === null ? loginPage() : blogPage()}
+      {user === null ? (
+        <LoginForm
+          handleLogin={handleLogin}
+          username={username}
+          password={password}
+          setPassword={setPassword}
+          setUsername={setUsername}
+        />
+      ) : (
+        <div>
+          <p>
+            {user.name} logged in <button onClick={logout}>logout</button>
+          </p>
+          <Toggle buttonLabel="new note">
+            <BlogForm newBlog={newBlog} handleAddBlog={handleAddBlog} addBlog={addBlog} />
+          </Toggle>
+          {blogs.map((blog) => (
+            <Blog key={blog.id} blog={blog} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
