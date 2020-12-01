@@ -7,11 +7,19 @@ export const getAllFromDb = async () => {
   return response.data
 }
 
-export const createAnecdote = (content) => {
-  return {
+const createNew = async (content) => {
+  const object = { content, votes: 0 }
+
+  const response = await axios.post(baseUrl, object)
+  return response.data
+}
+
+export const createAnecdote = (content) => async (dispatch) => {
+  const newAnecdote = await createNew(content)
+  dispatch({
     type: 'NEW_ANECDOTE',
-    payload: content,
-  }
+    payload: newAnecdote,
+  })
 }
 
 export const addVote = (id) => {
@@ -22,7 +30,7 @@ export const addVote = (id) => {
 }
 
 export const initializeAnecdotes = () => async (dispatch) => {
-  const anecdotes = await getAllFromDb();
+  const anecdotes = await getAllFromDb()
   dispatch({
     type: 'INIT_ANECDOTES',
     data: anecdotes,
