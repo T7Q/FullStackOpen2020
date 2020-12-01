@@ -8,7 +8,6 @@ const Blog = ({ blog, updateBlog, removeBlog, username }) => {
     borderWidth: 1,
     marginBottom: 5,
   }
-
   const deleteButtonStyle = {
     backgroundColor: 'lightblue',
     borderRadius: '5px',
