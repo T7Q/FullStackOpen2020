@@ -64,6 +64,21 @@ const App = () => {
       setPassword('')
     } catch (exception) {
       setNotification({ text: 'wrong username or password', type: 'error' })
+      setTimeout(() => {
+        setNotification({ text: '', type: '' })
+      }, 3000)
+    }
+  }
+
+  const updateBlog = async (blogInfo) => {
+    try {
+      await blogService.update(blogInfo)
+      blogService.getAll().then((blogs) => setBlogs(blogs))
+    } catch (e) {
+      setNotification({ text: 'oops, smth went wrong updating blog info', type: 'error' })
+      setTimeout(() => {
+        setNotification({ text: '', type: '' })
+      }, 3000)
     }
   }
 
@@ -88,7 +103,7 @@ const App = () => {
             <BlogForm addBlog={addBlog} />
           </Toggle>
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
           ))}
         </div>
       )}
