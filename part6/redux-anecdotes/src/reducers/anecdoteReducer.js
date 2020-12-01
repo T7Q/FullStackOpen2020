@@ -21,11 +21,12 @@ export const addVote = (id) => {
   }
 }
 
-export const initializeAnecdotes = (anecdotes) => {
-  return {
+export const initializeAnecdotes = () => async (dispatch) => {
+  const anecdotes = await getAllFromDb();
+  dispatch({
     type: 'INIT_ANECDOTES',
     data: anecdotes,
-  }
+  })
 }
 
 const anecdoteReducer = (state = [], action) => {
