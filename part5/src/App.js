@@ -9,7 +9,7 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  
+
   const [notification, setNotification] = useState({ text: '', type: '' })
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -73,9 +73,27 @@ const App = () => {
   const updateBlog = async (blogInfo) => {
     try {
       await blogService.update(blogInfo)
-      blogService.getAll().then((blogs) => setBlogs(blogs))
+      const updatedBlogs = blogs.map((blog) => (blog.id === blogInfo.id ? { ...blogInfo } : blog))
+      setBlogs(updatedBlogs)
     } catch (e) {
       setNotification({ text: 'oops, smth went wrong updating blog info', type: 'error' })
+      setTimeout(() => {
+        setNotification({ text: '', type: '' })
+      }, 3000)
+    }
+  }
+
+  const removeBlog = async (blogId) => {
+    try {
+      await blogService.remove(blogId)
+      const updatedBlogs = blogs.filter((blog) => (blog.id === blogId ? false : blog))
+      setBlogs(updatedBlogs)
+      setNotification({ text: 'blog was successfully deleted', type: '' })
+      setTimeout(() => {
+        setNotification({ text: '', type: '' })
+      }, 3000)
+    } catch (e) {
+      setNotification({ text: 'error deleting the blog', type: 'error' })
       setTimeout(() => {
         setNotification({ text: '', type: '' })
       }, 3000)
@@ -102,9 +120,11 @@ const App = () => {
           <Toggle buttonLabel="new note">
             <BlogForm addBlog={addBlog} />
           </Toggle>
-          {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
-          ))}
+          {blogs
+            .sort((a, b) => b.likes - a.likes)
+            .map((blog) => (
+              <Blog key={blog.id} blog={blog} updateBlog={updateBlog} removeBlog={removeBlog} username={user.username}/>
+            ))}
         </div>
       )}
     </div>
