@@ -9,7 +9,6 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-
   const [notification, setNotification] = useState({ text: '', type: '' })
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -106,11 +105,11 @@ const App = () => {
       <Notification notification={notification} />
       {user === null ? (
         <LoginForm
-          handleLogin={handleLogin}
           username={username}
           password={password}
           setPassword={setPassword}
           setUsername={setUsername}
+          handleLogin={handleLogin}
         />
       ) : (
         <div>
@@ -123,7 +122,13 @@ const App = () => {
           {blogs
             .sort((a, b) => b.likes - a.likes)
             .map((blog) => (
-              <Blog key={blog.id} blog={blog} updateBlog={updateBlog} removeBlog={removeBlog} username={user.username}/>
+              <Blog
+                key={blog.id}
+                blog={blog}
+                updateBlog={updateBlog}
+                removeBlog={removeBlog}
+                username={user.username}
+              />
             ))}
         </div>
       )}
