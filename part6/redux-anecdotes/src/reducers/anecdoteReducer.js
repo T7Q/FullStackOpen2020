@@ -14,6 +14,11 @@ const createNew = async (content) => {
   return response.data
 }
 
+const update = async (anecdote) => {
+  const response = await axios.put(`${baseUrl}/${anecdote.id}`, anecdote);
+  return response.data;
+} 
+
 export const createAnecdote = (content) => async (dispatch) => {
   const newAnecdote = await createNew(content)
   dispatch({
@@ -22,18 +27,20 @@ export const createAnecdote = (content) => async (dispatch) => {
   })
 }
 
-export const addVote = (id) => {
-  return {
+export const addVote = (anecdote) => async (dispatch) => {
+  const votedAnecdote = { ...anecdote, votes: anecdote.votes + 1 };
+  const updatedAnecdote = await update(votedAnecdote);
+  dispatch({
     type: 'VOTE',
-    payload: id,
-  }
+    payload: updatedAnecdote,
+  })
 }
 
 export const initializeAnecdotes = () => async (dispatch) => {
   const anecdotes = await getAllFromDb()
   dispatch({
     type: 'INIT_ANECDOTES',
-    data: anecdotes,
+    payload: anecdotes,
   })
 }
 
@@ -42,13 +49,12 @@ const anecdoteReducer = (state = [], action) => {
   // console.log('action', action);
   switch (action.type) {
     case 'VOTE':
-      const votedAnecdote = state.find((n) => n.id === action.payload)
-      const updatedAnecdote = { ...votedAnecdote, votes: votedAnecdote.votes + 1 }
-      return state.map((element) => (element.id === updatedAnecdote.id ? updatedAnecdote : element))
+      const id = action.payload.id
+      return state.map((an) => (an.id !== id ? an : action.payload));
     case 'NEW_ANECDOTE':
       return [...state, action.payload]
     case 'INIT_ANECDOTES':
-      return action.data
+      return action.payload
     default:
       return state
   }
