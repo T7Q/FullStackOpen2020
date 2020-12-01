@@ -7,7 +7,7 @@ import loginService from './services/login'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [notification, setNotification] = useState({ text: '', type: '' })
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -39,11 +39,13 @@ const App = () => {
     try {
       const result = await blogService.create(newBlog)
       setBlogs(blogs.concat(result))
+      setNotification({ text: `a new blog ${newBlog.title} by ${newBlog.author} added`, type: '' })
+      setTimeout(() => setNotification({ text: '', type: '' }), 3000)
     } catch (e) {
-      setErrorMessage('Fields cant be empty')
+      setNotification({ text: `fileds cannot be empty`, type: 'error' })
       setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+        setNotification({ text: '', type: '' })
+      }, 3000)
     }
   }
 
@@ -63,16 +65,12 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+      setNotification({ text: 'wrong username or password', type: 'error' })
     }
   }
 
   const loginPage = () => (
     <div>
-      <h2>Log in to application</h2>
       <form onSubmit={handleLogin}>
         <div>
           username
@@ -99,7 +97,6 @@ const App = () => {
 
   const blogPage = () => (
     <div>
-      <h2>blogs</h2>
       <p>
         {user.name} logged in <button onClick={logout}>logout</button>
       </p>
@@ -121,7 +118,13 @@ const App = () => {
     </div>
   )
 
-  return <div>{user === null ? loginPage() : blogPage()}</div>
+  return (
+    <div>
+      <h2> {user === null ? 'Log in to application' : 'blogs'} </h2>
+      <Notification notification={notification} />
+      {user === null ? loginPage() : blogPage()}
+    </div>
+  )
 }
 
 export default App
