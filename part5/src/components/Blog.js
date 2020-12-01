@@ -4,7 +4,7 @@ const Blog = ({ blog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 5,
-    border: '1px solid blue',
+    border: '1px solid grey',
     borderWidth: 1,
     marginBottom: 5,
   }
