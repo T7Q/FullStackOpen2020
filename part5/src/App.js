@@ -9,7 +9,7 @@ import loginService from './services/login'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
+  
   const [notification, setNotification] = useState({ text: '', type: '' })
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -33,12 +33,7 @@ const App = () => {
     setUser(null)
   }
 
-  const handleAddBlog = (event) => {
-    setNewBlog({ ...newBlog, [event.target.name]: event.target.value })
-  }
-
-  const addBlog = async (event) => {
-    event.preventDefault()
+  const addBlog = async (newBlog) => {
     try {
       const result = await blogService.create(newBlog)
       setBlogs(blogs.concat(result))
@@ -90,7 +85,7 @@ const App = () => {
             {user.name} logged in <button onClick={logout}>logout</button>
           </p>
           <Toggle buttonLabel="new note">
-            <BlogForm newBlog={newBlog} handleAddBlog={handleAddBlog} addBlog={addBlog} />
+            <BlogForm addBlog={addBlog} />
           </Toggle>
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
