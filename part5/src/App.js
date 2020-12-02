@@ -119,17 +119,19 @@ const App = () => {
           <Toggle buttonLabel="new note">
             <BlogForm addBlog={addBlog} />
           </Toggle>
-          {blogs
-            .sort((a, b) => b.likes - a.likes)
-            .map((blog) => (
-              <Blog
-                key={blog.id}
-                blog={blog}
-                updateBlog={updateBlog}
-                removeBlog={removeBlog}
-                username={user.username}
-              />
-            ))}
+          <div id='blogList'>
+            {blogs
+              .sort((a, b) => b.likes - a.likes)
+              .map((blog) => (
+                <Blog
+                  key={blog.id}
+                  blog={blog}
+                  updateBlog={updateBlog}
+                  removeBlog={removeBlog}
+                  username={user.username}
+                />
+              ))}
+          </div>
         </div>
       )}
     </div>

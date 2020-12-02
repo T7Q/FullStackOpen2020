@@ -41,4 +41,29 @@ describe('Blog app', function () {
       cy.get('html').should('not.contain', `${user.name} logged in`)
     })
   })
+
+  describe('When logged in', function () {
+    beforeEach(function () {
+      cy.get('#username').type(`${user.username}`)
+      cy.get('#password').type(`${user.password}`)
+      cy.get('#login-button').click()
+    })
+
+    it('A blog can be created', function () {
+      const newBlog = {
+        title: "hello world",
+        author: "John Doe",
+        url: "www.whoohoo.com"
+      }
+
+      cy.contains('new note').click()
+      cy.get('#title').type(`${newBlog.title}`)
+      cy.get('#author').type(`${newBlog.author}`)
+      cy.get('#url').type(`${newBlog.url}`)
+      cy.get('#createBtn').click()
+      cy.get('#blogList > *').should('have.length', 1)
+      cy.contains(`${newBlog.title}`)
+      cy.contains(`${newBlog.author}`)
+    })
+  })
 })
