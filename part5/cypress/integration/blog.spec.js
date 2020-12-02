@@ -8,6 +8,7 @@ const newBlog = {
   title: 'hello world',
   author: 'John Doe',
   url: 'www.whoohoo.com',
+  likes: 0,
 }
 
 describe('Blog app', function () {
@@ -99,6 +100,17 @@ describe('Blog app', function () {
       cy.get('#toggleBtn').click()
       cy.get('#removeBtn').should('not.exist')
     })
-    
+
+    it('Blogs are ordered according to likes, most likes being first', function () {
+      cy.createBlog(newBlog)
+      const otherBlog = {
+        title: 'Most liked',
+        author: 'Marry Doe',
+        url: 'www.hi.com',
+        likes: 100,
+      }
+      cy.createBlog(otherBlog)
+      cy.get('#blogList').first().contains('Most liked')
+    })
   })
 })
