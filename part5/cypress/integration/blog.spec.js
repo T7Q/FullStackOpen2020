@@ -50,9 +50,7 @@ describe('Blog app', function () {
 
   describe('When logged in', function () {
     beforeEach(function () {
-      cy.get('#username').type(`${user.username}`)
-      cy.get('#password').type(`${user.password}`)
-      cy.get('#login-button').click()
+      cy.login({ username: user.username, password: user.password })
     })
 
     it('A blog can be created', function () {
@@ -78,5 +76,29 @@ describe('Blog app', function () {
       cy.contains('likes 1')
     })
 
+    it('User who created a blog can delete it', function () {
+      cy.createBlog(newBlog)
+      cy.get('#blogList > *').should('have.length', 1)
+      cy.get('#toggleBtn').click()
+      cy.get('#removeBtn').click()
+      cy.get('#blogs > *').should('have.length', 0)
+    })
+
+    it('Other user cannot delete the blog', function () {
+      cy.createBlog(newBlog)
+      cy.contains('logout').click()
+      const otherUser = {
+        username: 'otherUser',
+        name: 'Other K',
+        password: '1234',
+      }
+      cy.request('POST', 'http://localhost:3001/api/users', otherUser)
+      cy.get('#username').type(`${otherUser.username}`)
+      cy.get('#password').type(`${otherUser.password}`)
+      cy.get('#login-button').click()
+      cy.get('#toggleBtn').click()
+      cy.get('#removeBtn').should('not.exist')
+    })
+    
   })
 })
