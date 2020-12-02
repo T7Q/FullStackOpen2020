@@ -4,6 +4,12 @@ const user = {
   password: '1234',
 }
 
+const newBlog = {
+  title: 'hello world',
+  author: 'John Doe',
+  url: 'www.whoohoo.com',
+}
+
 describe('Blog app', function () {
   beforeEach(function () {
     cy.request('POST', 'http://localhost:3001/api/testing/reset')
@@ -50,12 +56,6 @@ describe('Blog app', function () {
     })
 
     it('A blog can be created', function () {
-      const newBlog = {
-        title: "hello world",
-        author: "John Doe",
-        url: "www.whoohoo.com"
-      }
-
       cy.contains('new note').click()
       cy.get('#title').type(`${newBlog.title}`)
       cy.get('#author').type(`${newBlog.author}`)
@@ -65,5 +65,18 @@ describe('Blog app', function () {
       cy.contains(`${newBlog.title}`)
       cy.contains(`${newBlog.author}`)
     })
+
+    it('User can like a blog', function () {
+      cy.contains('new note').click()
+      cy.get('#title').type(`${newBlog.title}`)
+      cy.get('#author').type(`${newBlog.author}`)
+      cy.get('#url').type(`${newBlog.url}`)
+      cy.get('#createBtn').click()
+      cy.get('#toggleBtn').click()
+      cy.contains('likes 0')
+      cy.get('#likeBtn').click()
+      cy.contains('likes 1')
+    })
+
   })
 })
