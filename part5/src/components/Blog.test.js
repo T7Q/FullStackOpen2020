@@ -3,8 +3,6 @@ import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent } from '@testing-library/react'
 import Blog from './Blog'
 
-import { prettyDOM } from '@testing-library/dom'
-
 describe('<Blog />', () => {
   const blog = {
     title: 'Blog Title',
@@ -28,8 +26,6 @@ describe('<Blog />', () => {
     component = render(
       <Blog blog={blog} updateBlog={mockUpdate} removeBlog={mockRemove} username={username} />
     )
-
-    // component.debug()
   })
 
   test('blog renders the blogs title and author, but not url or number of likes', () => {
