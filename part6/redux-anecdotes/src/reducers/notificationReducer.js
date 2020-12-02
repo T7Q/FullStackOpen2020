@@ -13,8 +13,6 @@ const notificationReducer = (state = initialState, action) => {
 
 export const setNotification = (message = '', timeout = 5) => async (dispatch, getState) => {
   clearTimeout(getState().notification.id)
-  console.log('message', message)
-  console.log('timeout', timeout)
 
   let id = setTimeout(() => {
     dispatch(clearNotification())
