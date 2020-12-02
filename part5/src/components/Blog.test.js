@@ -1,6 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
-import { render } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import Blog from './Blog'
 
 import { prettyDOM } from '@testing-library/dom'
@@ -19,13 +19,13 @@ describe('<Blog />', () => {
   }
 
   const username = 'tatiana'
-  const testUpdate = jest.fn()
-  const testRemove = jest.fn()
+  const mockUpdate = jest.fn()
+  const mockRemove = jest.fn()
 
   let component
   beforeEach(() => {
     component = render(
-      <Blog blog={blog} updateBlog={testUpdate} removeBlog={testRemove} username={username} />
+      <Blog blog={blog} updateBlog={mockUpdate} removeBlog={mockRemove} username={username} />
     )
     // component.debug()
   })
@@ -33,9 +33,18 @@ describe('<Blog />', () => {
   test('blog renders the blogs title and author, but not url or number of likes', () => {
     const div = component.container.querySelector('.blog')
 
-    expect(div).toHaveTextContent('Blog Title')
-    expect(div).toHaveTextContent('Mark Doe')
-    expect(div).not.toHaveTextContent('likes');
-    expect(div).not.toHaveTextContent('www.blogtest.com');
+    expect(div).toHaveTextContent(`${blog.title}`)
+    expect(div).toHaveTextContent(`${blog.author}`)
+    expect(div).not.toHaveTextContent(`likes ${blog.likes}`)
+    expect(div).not.toHaveTextContent(`${blog.url}`)
+  })
+
+  test('blogs url and number of likes are shown when the button is clicked', () => {
+    const button = component.getByText('view')
+    fireEvent.click(button)
+
+    const div = component.container.querySelector('.blog')
+    expect(div).toHaveTextContent(`likes ${blog.likes}`)
+    expect(div).toHaveTextContent(`${blog.url}`)
   })
 })
