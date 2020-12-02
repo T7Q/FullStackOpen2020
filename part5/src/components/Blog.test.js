@@ -23,10 +23,12 @@ describe('<Blog />', () => {
   const mockRemove = jest.fn()
 
   let component
+
   beforeEach(() => {
     component = render(
       <Blog blog={blog} updateBlog={mockUpdate} removeBlog={mockRemove} username={username} />
     )
+
     // component.debug()
   })
 
@@ -46,5 +48,17 @@ describe('<Blog />', () => {
     const div = component.container.querySelector('.blog')
     expect(div).toHaveTextContent(`likes ${blog.likes}`)
     expect(div).toHaveTextContent(`${blog.url}`)
+  })
+
+  test('if the like button is clicked twice, the event handler is called twice', () => {
+    const viewButton = component.getByText('view')
+    fireEvent.click(viewButton)
+
+    const likeButton = component.getByText('like')
+
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
+
+    expect(mockUpdate.mock.calls).toHaveLength(2)
   })
 })
