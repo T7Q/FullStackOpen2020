@@ -6,8 +6,8 @@ const user = {
 
 describe('Blog app', function () {
   beforeEach(function () {
-    // cy.request('POST', 'http://localhost:3001/api/testing/reset');
-    // cy.request('POST', 'http://localhost:3001/api/users', user)
+    cy.request('POST', 'http://localhost:3001/api/testing/reset')
+    cy.request('POST', 'http://localhost:3001/api/users', user)
     cy.visit('http://localhost:3000')
   })
 
