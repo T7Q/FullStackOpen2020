@@ -27,14 +27,19 @@ const Blog = ({ blog, updateBlog, removeBlog, username }) => {
   return (
     <div style={blogStyle} className="blog">
       <div>
-        {blog.title}{' '}{blog.author}
-        <button id="toggleBtn" onClick={() => setVisible(!visible)}>{visible ? 'hide' : 'view'}</button>
+        {blog.title} {blog.author}
+        <button id="toggleBtn" onClick={() => setVisible(!visible)}>
+          {visible ? 'hide' : 'view'}
+        </button>
       </div>
       {visible && (
         <>
           <div>{blog.url}</div>
-          <div >
-            likes {blog.likes} <button id="likeBtn" onClick={likeBlog}>like</button>
+          <div>
+            likes {blog.likes}{' '}
+            <button id="likeBtn" onClick={likeBlog}>
+              like
+            </button>
           </div>
           <div>{blog.author}</div>
           {blog.user && blog.user.username === username && (
