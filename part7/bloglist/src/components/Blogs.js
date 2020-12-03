@@ -7,9 +7,10 @@ import Toggle from './Toggle'
 import blogService from '../services/blogs'
 import { setNotification } from '../reducers/notificationReducer'
 
-const Blogs = ({ user }) => {
+const Blogs = () => {
   const dispatch = useDispatch()
   const blogs = useSelector((state) => state.blog)
+  const user = useSelector((state) => state.user)
 
   useEffect(() => {
     dispatch(getBlogs())
