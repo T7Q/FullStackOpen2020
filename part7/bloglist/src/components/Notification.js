@@ -1,6 +1,9 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
-const Notification = ({ notification: { text, type } }) => {
+const Notification = () => {
+  const type = useSelector((state) => state.notification.type)
+  const text = useSelector((state) => state.notification.text)
   const style = {
     color: type === 'error' ? 'red' : 'green',
     backgroundColor: 'lightgrey',
@@ -8,7 +11,7 @@ const Notification = ({ notification: { text, type } }) => {
     padding: '5px',
     margin: '0px 0px 10px 0px',
   }
-  if (text === '') {
+  if (text === "") {
     return null
   }
 

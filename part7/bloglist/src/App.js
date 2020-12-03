@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
@@ -6,13 +7,14 @@ import LoginForm from './components/LoginForm'
 import Toggle from './components/Toggle'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import { setNotification } from './reducers/notificationReducer'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [notification, setNotification] = useState({ text: '', type: '' })
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
@@ -36,13 +38,15 @@ const App = () => {
     try {
       const result = await blogService.create(newBlog)
       setBlogs(blogs.concat(result))
-      setNotification({ text: `a new blog ${newBlog.title} by ${newBlog.author} added`, type: '' })
+      dispatch(
+        setNotification({
+          text: `a new blog ${newBlog.title} by ${newBlog.author} added`,
+          type: '',
+        })
+      )
       setTimeout(() => setNotification({ text: '', type: '' }), 3000)
     } catch (e) {
-      setNotification({ text: `fileds cannot be empty`, type: 'error' })
-      setTimeout(() => {
-        setNotification({ text: '', type: '' })
-      }, 3000)
+      dispatch(setNotification({ text: `fileds cannot be empty`, type: 'error' }))
     }
   }
 
@@ -62,10 +66,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setNotification({ text: 'wrong username or password', type: 'error' })
-      setTimeout(() => {
-        setNotification({ text: '', type: '' })
-      }, 3000)
+      dispatch(setNotification({ text: 'wrong username or password', type: 'error' }))
     }
   }
 
@@ -75,10 +76,7 @@ const App = () => {
       const updatedBlogs = blogs.map((blog) => (blog.id === blogInfo.id ? { ...blogInfo } : blog))
       setBlogs(updatedBlogs)
     } catch (e) {
-      setNotification({ text: 'oops, smth went wrong updating blog info', type: 'error' })
-      setTimeout(() => {
-        setNotification({ text: '', type: '' })
-      }, 3000)
+      dispatch(setNotification({ text: 'oops, smth went wrong updating blog info', type: 'error' }))
     }
   }
 
@@ -87,22 +85,16 @@ const App = () => {
       await blogService.remove(blogId)
       const updatedBlogs = blogs.filter((blog) => (blog.id === blogId ? false : blog))
       setBlogs(updatedBlogs)
-      setNotification({ text: 'blog was successfully deleted', type: '' })
-      setTimeout(() => {
-        setNotification({ text: '', type: '' })
-      }, 3000)
+      dispatch(setNotification({ text: 'blog was successfully deleted', type: '' }))
     } catch (e) {
-      setNotification({ text: 'error deleting the blog', type: 'error' })
-      setTimeout(() => {
-        setNotification({ text: '', type: '' })
-      }, 3000)
+      dispatch(setNotification({ text: 'error deleting the blog', type: 'error' }))
     }
   }
 
   return (
     <div>
       <h2> {user === null ? 'Log in to application' : 'blogs'} </h2>
-      <Notification notification={notification} />
+      <Notification />
       {user === null ? (
         <LoginForm
           username={username}
@@ -119,7 +111,7 @@ const App = () => {
           <Toggle buttonLabel="new note">
             <BlogForm addBlog={addBlog} />
           </Toggle>
-          <div id='blogList'>
+          <div id="blogList">
             {blogs
               .sort((a, b) => b.likes - a.likes)
               .map((blog) => (
