@@ -1,16 +1,35 @@
-import React, { useState } from 'react'
-const Blog = ({ blog, updateBlog, removeBlog, username }) => {
-  const [visible, setVisible] = useState(false)
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 5,
-    border: '1px solid grey',
-    borderWidth: 1,
-    marginBottom: 5,
-  }
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import blogService from '../services/blogs'
+import { getBlogs } from '../reducers/blogReducer'
+import { setNotification } from '../reducers/notificationReducer'
+
+const Blog = ({ user, blog }) => {
+  const dispatch = useDispatch()
+  if (!blog) return null
+
   const deleteButtonStyle = {
     backgroundColor: 'lightblue',
     borderRadius: '5px',
+  }
+
+  const updateBlog = async (blogInfo) => {
+    try {
+      await blogService.update(blogInfo)
+      dispatch(getBlogs())
+    } catch (e) {
+      dispatch(setNotification({ text: 'oops, smth went wrong updating blog info', type: 'error' }))
+    }
+  }
+
+  const removeBlog = async (blogId) => {
+    try {
+      await blogService.remove(blogId)
+      dispatch(getBlogs())
+      dispatch(setNotification({ text: 'blog was successfully deleted', type: '' }))
+    } catch (e) {
+      dispatch(setNotification({ text: 'error deleting the blog', type: 'error' }))
+    }
   }
 
   const likeBlog = () => {
@@ -25,29 +44,23 @@ const Blog = ({ blog, updateBlog, removeBlog, username }) => {
   }
 
   return (
-    <div style={blogStyle} className="blog">
-      <div>
+    <div>
+      <h2>
         {blog.title} {blog.author}
-        <button id="toggleBtn" onClick={() => setVisible(!visible)}>
-          {visible ? 'hide' : 'view'}
+      </h2>
+      <a href={blog.url}>{blog.url}</a>
+      <div>
+        likes {blog.likes}{' '}
+        <button id="likeBtn" onClick={likeBlog}>
+          like
         </button>
       </div>
-      {visible && (
-        <>
-          <div>{blog.url}</div>
-          <div>
-            likes {blog.likes}{' '}
-            <button id="likeBtn" onClick={likeBlog}>
-              like
-            </button>
-          </div>
-          <div>{blog.author}</div>
-          {blog.user && blog.user.username === username && (
-            <button id="removeBtn" style={deleteButtonStyle} onClick={handleDeleteBlog}>
-              remove
-            </button>
-          )}
-        </>
+      added by {blog.user.name ? blog.user.name : blog.user.username}
+      <div>{blog.author}</div>
+      {blog.user && blog.user.username === user.username && (
+        <button id="removeBtn" style={deleteButtonStyle} onClick={handleDeleteBlog}>
+          remove
+        </button>
       )}
     </div>
   )

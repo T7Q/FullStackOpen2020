@@ -32,7 +32,6 @@ export const setUser = () => async (dispatch) => {
 }
 
 export const logIn = (data) => async (dispatch) => {
-  console.log("user reducer logIn")
   try {
     const user = await loginService.login(data)
     dispatch({
