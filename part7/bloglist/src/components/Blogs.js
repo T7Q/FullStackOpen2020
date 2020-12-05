@@ -44,7 +44,7 @@ const Blogs = () => {
       <Toggle buttonLabel="new note">
         <BlogForm addBlog={addBlog} />
       </Toggle>
-      <div id="blogList">
+      <div id="blogList" className="mt-2">
         {blogs
           .sort((a, b) => b.likes - a.likes)
           .map((blog) => (

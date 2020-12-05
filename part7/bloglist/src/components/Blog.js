@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import blogService from '../services/blogs'
 import { getBlogs, addComment } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import { Form, Button, ListGroup } from 'react-bootstrap'
 
 const Blog = ({ user, blog }) => {
   const dispatch = useDispatch()
@@ -55,34 +56,45 @@ const Blog = ({ user, blog }) => {
   }
 
   return (
-    <div>
-      <h2>
+    <div className="mt-1">
+      <h2 className="mt-1" style={{ color: '#70adb5' }}>
         {blog.title} {blog.author}
       </h2>
       <a href={blog.url}>{blog.url}</a>
-      <div>
+      <div className="mt-2 mb-2">
         likes {blog.likes}{' '}
-        <button id="likeBtn" onClick={likeBlog}>
+        <Button id="likeBtn" onClick={likeBlog} style={{ border: 'none', color: '#132743', backgroundColor: '#ffcbcb' }}>
           like
-        </button>
+        </Button>
       </div>
-      added by {blog.user.name ? blog.user.name : blog.user.username}
-      <div>{blog.author}</div>
+      <div className="mt-2 mb-2">added by {blog.user.name ? blog.user.name : blog.user.username}</div>
       {blog.user && blog.user.username === user.username && (
-        <button id="removeBtn" style={deleteButtonStyle} onClick={handleDeleteBlog}>
+        <Button id="removeBtn" style={deleteButtonStyle} onClick={handleDeleteBlog}>
           remove
-        </button>
+        </Button>
       )}
-      <h3>comments</h3>
-      <form onSubmit={handleSubmit}>
-        <input name="comment" value={comment} onChange={handleChange}></input>
-        <button>add comment</button>
-      </form>
-      <ul>
-        {blog.comments.length > 0 && blog.comments.map((comment, index) => (
-          <li key={index}> {comment}</li>
-        ))}
-      </ul>
+      <h4 className="text-center mt-1">comments</h4>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="url">
+          <Form.Control type="text" placeholder="comment" value={comment} onChange={handleChange} />
+        </Form.Group>
+        <Button
+          type="submit"
+          style={{ width: '100%', border: 'none', color: '#132743', backgroundColor: '#ffcbcb' }}>
+          create
+        </Button>
+      </Form>
+      <div className="mt-5"></div>
+      <ListGroup>
+        {blog.comments.length > 0 &&
+          blog.comments.map((comment, index) => (
+            <ListGroup.Item key={index}> {comment}</ListGroup.Item>
+          ))}
+      </ListGroup>
+      {/* <ul>
+        {blog.comments.length > 0 &&
+          blog.comments.map((comment, index) => <li key={index}> {comment}</li>)}
+      </ul> */}
     </div>
   )
 }

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { logIn, setUser } from '../reducers/userReducer'
+import { Form, Button, Row, Col } from 'react-bootstrap'
 
 const loginForm = () => {
   const dispatch = useDispatch()
@@ -18,31 +19,31 @@ const loginForm = () => {
 
   return (
     <div>
-      <form onSubmit={handleLogin}>
-        <div>
-          username
-          <input
-            type="text"
-            id="username"
-            value={username}
-            name="username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          password
-          <input
-            type="password"
-            id="password"
-            value={password}
-            name="password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button id="login-button" type="submit">
-          login
-        </button>
-      </form>
+      <Row>
+        <Col xs={{ span: 6, offset: 3 }}>
+          <Form className="text-center mt-2" onSubmit={handleLogin}>
+            <Form.Group controlId="formUsername">
+              <Form.Control
+                type="text"
+                placeholder="Enter username"
+                {...username}
+                onChange={({ target }) => setUsername(target.value)}
+              />
+            </Form.Group>
+            <Form.Group controlId="formPassword">
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                {...password}
+                onChange={({ target }) => setPassword(target.value)}
+              />
+            </Form.Group>
+            <Button style={{ width: '100%', border: 'none', color: '#132743', backgroundColor: '#ffcbcb' }} type="submit">
+              login
+            </Button>
+          </Form>
+        </Col>
+      </Row>
     </div>
   )
 }

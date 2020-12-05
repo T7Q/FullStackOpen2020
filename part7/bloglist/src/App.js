@@ -30,9 +30,9 @@ const App = () => {
   }, [dispatch])
 
   return (
-    <div>
+    <div className="container">
       <NavBar user={user} />
-      <h2>{user === null ? 'Log in to application' : 'blog app'}</h2>
+      <h3 className="text-center mt-5">{user === null ? 'Log in to application' : 'Bloglist App'}</h3>
       <Notification />
       {user === null ? (
         <LoginForm />

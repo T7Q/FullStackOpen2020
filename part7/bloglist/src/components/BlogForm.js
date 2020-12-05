@@ -1,31 +1,55 @@
 import React, { useState } from 'react'
+import { Form, Button } from 'react-bootstrap'
 
 const BlogForm = ({ addBlog }) => {
   const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
 
   const handleAddBlog = (event) => {
-    setNewBlog({ ...newBlog, [event.target.name]: event.target.value })
+    console.log('handle add', event.target)
+    console.log('handle add', event.target.value)
+    console.log('handle add', event.target.placeholder)
+    setNewBlog({ ...newBlog, [event.target.placeholder]: event.target.value })
   }
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault()
-        addBlog(newBlog)
-      }}>
-      <div>
-        title: <input id="title" name="title" value={newBlog.title} onChange={handleAddBlog} />
-      </div>
-      <div>
-        author: <input id="author" name="author" value={newBlog.author} onChange={handleAddBlog} />
-      </div>
-      <div>
-        url: <input id="url" name="url" value={newBlog.url} onChange={handleAddBlog} />
-      </div>
-      <button id="createBtn" type="submit">
-        create
-      </button>
-    </form>
+    <div>
+      <Form
+        className="text-center mt-2"
+        onSubmit={(e) => {
+          e.preventDefault()
+          addBlog(newBlog)
+        }}>
+        <Form.Group controlId="title">
+          <Form.Control
+            type="text"
+            placeholder="title"
+            value={newBlog.title}
+            onChange={handleAddBlog}
+          />
+        </Form.Group>
+        <Form.Group controlId="author">
+          <Form.Control
+            type="text"
+            placeholder="author"
+            value={newBlog.author}
+            onChange={handleAddBlog}
+          />
+        </Form.Group>
+        <Form.Group controlId="url">
+          <Form.Control
+            type="text"
+            placeholder="url"
+            value={newBlog.url}
+            onChange={handleAddBlog}
+          />
+        </Form.Group>
+        <Button
+          type="submit"
+          style={{ width: '100%', border: 'none', color: '#132743', backgroundColor: '#ffcbcb' }}>
+          create
+        </Button>
+      </Form>
+    </div>
   )
 }
 
