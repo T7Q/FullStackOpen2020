@@ -7,9 +7,10 @@ import Blogs from './components/Blogs'
 import Blog from './components/Blog'
 import Users from './components/Users'
 import User from './components/User'
-import { logOut, setUser } from './reducers/userReducer'
+import { setUser } from './reducers/userReducer'
 import { getUsers } from './reducers/usersReducer'
 import { getBlogs } from './reducers/blogReducer'
+import NavBar from './components/NavBar'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -22,9 +23,6 @@ const App = () => {
   const blogMatch = useRouteMatch('/blogs/:id')
   const blog = blogMatch ? blogs.find((blog) => blog.id === blogMatch.params.id) : null
 
-  const logout = () => {
-    dispatch(logOut())
-  }
   useEffect(() => {
     dispatch(setUser())
     dispatch(getUsers())
@@ -34,15 +32,13 @@ const App = () => {
   console.log('USER APP', user)
   return (
     <div>
-      <h2> {user === null ? 'Log in to application' : 'blogs'} </h2>
+      <NavBar user={user} />
+      <h2>{user === null ? 'Log in to application' : 'blog app'}</h2>
       <Notification />
       {user === null ? (
         <LoginForm />
       ) : (
         <div>
-          <p>
-            {user.name} logged in <button onClick={logout}>logout</button>
-          </p>
           <Switch>
             <Route exact path="/">
               <Blogs />
