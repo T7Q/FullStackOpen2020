@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import blogService from '../services/blogs'
-import { getBlogs } from '../reducers/blogReducer'
+import { getBlogs, addComment } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 
 const Blog = ({ user, blog }) => {
   const dispatch = useDispatch()
+  const [comment, setComment] = useState('')
+
   if (!blog) return null
 
   const deleteButtonStyle = {
@@ -43,6 +45,15 @@ const Blog = ({ user, blog }) => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) removeBlog(blog.id)
   }
 
+  const handleChange = (e) => {
+    setComment(e.target.value)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    dispatch(addComment(comment, blog))
+  }
+
   return (
     <div>
       <h2>
@@ -62,6 +73,16 @@ const Blog = ({ user, blog }) => {
           remove
         </button>
       )}
+      <h3>comments</h3>
+      <form onSubmit={handleSubmit}>
+        <input name="comment" value={comment} onChange={handleChange}></input>
+        <button>add comment</button>
+      </form>
+      <ul>
+        {blog.comments.length > 0 && blog.comments.map((comment, index) => (
+          <li key={index}> {comment}</li>
+        ))}
+      </ul>
     </div>
   )
 }

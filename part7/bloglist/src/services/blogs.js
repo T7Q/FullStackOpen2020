@@ -23,20 +23,28 @@ const create = async (newObject) => {
 
 const update = async (blogInfo) => {
   const config = {
-    headers: { Authorization: token }
+    headers: { Authorization: token },
   }
 
   const response = await axios.put(`${baseUrl}/${blogInfo.id}`, blogInfo, config)
   return response.data
 }
 
-const remove = async ( blogId ) => {
+const remove = async (blogId) => {
   const config = {
-    headers: { Authorization: token }
+    headers: { Authorization: token },
   }
 
   const response = await axios.delete(`${baseUrl}/${blogId}`, config)
   return response.data
 }
+const comment = async (comment, blogId) => {
+  const config = {
+    headers: { Authorization: token },
+  }
 
-export default { getAll, setToken, create, update, remove }
+  const response = await axios.post(`${baseUrl}/${blogId}/comments`, { comment }, config)
+  return response.data
+}
+
+export default { getAll, setToken, create, update, remove, comment }
