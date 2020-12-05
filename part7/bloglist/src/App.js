@@ -21,7 +21,6 @@ const App = () => {
   const userInfo = match ? users.find((u) => u.id === match.params.id) : null
 
   const blogMatch = useRouteMatch('/blogs/:id')
-  console.log("blogs", blogs)
   const blog = blogMatch ? blogs.find((blog) => blog.id === blogMatch.params.id) : null
 
   useEffect(() => {

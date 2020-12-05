@@ -9,8 +9,6 @@ const blogReducer = (state = initialState, action) => {
   case 'INIT_BLOGS':
     return payload
   case 'UPDATE_BLOG':
-    console.log("GOTE HERE state", state)
-    console.log("GOTE HERE payload", payload)
     return state.map((blog) => (blog.id === payload.id ? { ...payload } : blog))
   default:
     return state
@@ -56,7 +54,6 @@ export const addComment = (comment, blog) => async (dispatch) => {
     await blogService.comment(comment, blog.id)
     const newBlog = { ...blog }
     newBlog.comments = newBlog.comments.concat(comment)
-    console.log("new blog", newBlog)
     dispatch({
       type: 'UPDATE_BLOG',
       payload: newBlog,
