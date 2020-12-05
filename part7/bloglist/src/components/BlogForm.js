@@ -5,9 +5,6 @@ const BlogForm = ({ addBlog }) => {
   const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
 
   const handleAddBlog = (event) => {
-    console.log('handle add', event.target)
-    console.log('handle add', event.target.value)
-    console.log('handle add', event.target.placeholder)
     setNewBlog({ ...newBlog, [event.target.placeholder]: event.target.value })
   }
 

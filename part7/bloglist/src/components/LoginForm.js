@@ -26,7 +26,7 @@ const loginForm = () => {
               <Form.Control
                 type="text"
                 placeholder="Enter username"
-                {...username}
+                value={username}
                 onChange={({ target }) => setUsername(target.value)}
               />
             </Form.Group>
@@ -34,7 +34,7 @@ const loginForm = () => {
               <Form.Control
                 type="password"
                 placeholder="Password"
-                {...password}
+                value={password}
                 onChange={({ target }) => setPassword(target.value)}
               />
             </Form.Group>
