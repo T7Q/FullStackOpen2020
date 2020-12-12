@@ -1,14 +1,21 @@
 import React, { useState } from 'react'
-import { useQuery, useLazyQuery } from '@apollo/client'
+import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
-import { ALL_AUTHORS, ALL_BOOKS } from './queries'
+import { ALL_AUTHORS, ALL_BOOKS, ADD_BOOK } from './queries'
 
 const App = () => {
   const [page, setPage] = useState('authors')
   const authors = useQuery(ALL_AUTHORS)
   const books = useQuery(ALL_BOOKS)
+
+  const [addBook] = useMutation(ADD_BOOK, {
+    refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
+    onError: (error) => {
+      console.log(error)
+    },
+  })
 
   return (
     <div>
@@ -20,9 +27,9 @@ const App = () => {
 
       <Authors show={page === 'authors'} authors={authors} />
 
-      <Books show={page === 'books'} books={books}/>
+      <Books show={page === 'books'} books={books} />
 
-      <NewBook show={page === 'add'} />
+      <NewBook show={page === 'add'} addBook={addBook}/>
     </div>
   )
 }
