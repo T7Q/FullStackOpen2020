@@ -19,7 +19,7 @@ This course serves as an introduction to modern web application development with
 
 - [x] Part 6 - State management with Redux
 
-- [ ] Part 7 - React router, custom hooks, styling app with CSS and webpack
+- [x] Part 7 - React router, custom hooks, styling app with CSS and webpack
 
 - [ ] Part 8 - GraphQL
 
