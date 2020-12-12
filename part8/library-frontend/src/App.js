@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
@@ -29,7 +29,7 @@ const App = () => {
 
       <Books show={page === 'books'} books={books} />
 
-      <NewBook show={page === 'add'} addBook={addBook}/>
+      <NewBook show={page === 'add'} addBook={addBook} />
     </div>
   )
 }
