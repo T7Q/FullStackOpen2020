@@ -1,4 +1,4 @@
-const { ApolloServer, gql } = require('apollo-server')
+const { ApolloServer, gql, UserInputError } = require('apollo-server')
 const { v1: uuid } = require('uuid')
 const mongoose = require('mongoose')
 const config = require('./utils/config')
@@ -71,30 +71,48 @@ const resolvers = {
     allAuthors: () => Author.find({}),
   },
   Author: {
-    bookCount: async (root) => {
-      let allbooks = await Book.find({}).populate('author')
-      return allbooks.reduce((count, book) => (book.author === root.name ? count + 1 : count), 0)
-    },
+    bookCount: async (root) => await Book.find({ author: root.id }).countDocuments(),
   },
   Mutation: {
     addBook: async (root, args) => {
       let author = await Author.findOne({ name: args.author })
-      if (!author) {
-        author = new Author({ name: args.author, id: uuid() })
-        author.save()
+      try {
+        if (!author) {
+          author = new Author({ name: args.author, id: uuid() })
+          author.save()
+        }
+      } catch (e) {
+        throw new UserInputError(e.message, {
+          invalidArgs: args,
+        })
       }
-      let book = new Book({ ...args, author: author.id, id: uuid() });
-      book.save();
-      book.author = author;
-      return book;
+
+      let book = new Book({ ...args, author: author.id, id: uuid() })
+      try {
+        await book.save()
+      } catch (e) {
+        throw new UserInputError(e.message, {
+          invalidArgs: args,
+        })
+      }
+
+      book.author = author
+      return book
     },
     editAuthor: async (root, args) => {
-      let authorToEdit = await Author.findOne({ name: args.name });
+      let authorToEdit = await Author.findOne({ name: args.name })
+      try {
+        authorToEdit = await Author.findOneAndUpdate(
+          { name: args.name },
+          { born: args.setBornTo },
+          { new: true }
+        )
+      } catch (e) {
+        throw new UserInputError(e.message, {
+          invalidArgs: args,
+        })
+      }
 
-      if (!authorToEdit) return null
-
-      authorToEdit.born = args.setBornTo
-      authorToEdit.save()
       return authorToEdit
     },
   },
