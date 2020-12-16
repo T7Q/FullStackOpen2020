@@ -151,14 +151,15 @@ const resolvers = {
     },
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username })
-      if (!user || args.password !== 'secret') {
+      if (!user || args.password !== 'pass') {
         throw new UserInputError('wrong credentials')
       }
       const userForToken = {
         username: user.username,
         id: user._id,
       }
-      return { value: jwt.sign(userForToken, process.env.JWT_SECRET) }
+      console.log("login backend")
+      return { value: jwt.sign(userForToken, config.JWT_SECRET) }
     },
   },
 }
@@ -169,7 +170,7 @@ const server = new ApolloServer({
   context: async ({ req }) => {
     const auth = req ? req.headers.authorization : null
     if (auth && auth.toLowerCase().startsWith('bearer ')) {
-      const decodedToken = jwt.verify(auth.substring(7), process.env.JWT_SECRET)
+      const decodedToken = jwt.verify(auth.substring(7), config.JWT_SECRET)
       const currentUser = await User.findById(decodedToken.id)
       return { currentUser }
     }
