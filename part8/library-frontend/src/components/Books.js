@@ -18,7 +18,7 @@ const Books = (props) => {
       setBooksList(books)
     else
       setBooksList(books.filter(book => book.genres.includes(genre)))
-  }, [genre, books])
+  }, [genre])
 
   if (!props.show) {
     return null
