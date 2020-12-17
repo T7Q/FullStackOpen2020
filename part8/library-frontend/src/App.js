@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { useQuery, useMutation, useApolloClient } from '@apollo/client'
+import { useQuery, useMutation, useApolloClient, useSubscription } from '@apollo/client'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Login from './components/Login'
 import Recommended from './components/Recommended'
-import { ALL_AUTHORS, ALL_BOOKS, ADD_BOOK, LOGIN } from './queries'
+import { ALL_AUTHORS, ALL_BOOKS, ADD_BOOK, LOGIN, BOOK_ADDED } from './queries'
 
 const App = () => {
   const [page, setPage] = useState('authors')
@@ -15,7 +15,7 @@ const App = () => {
 
   const [login, result] = useMutation(LOGIN, {
     onError: (error) => {
-      console.log("error", error)
+      console.log('error', error)
     },
   })
   const client = useApolloClient()
@@ -28,6 +28,13 @@ const App = () => {
       setPage('authors')
     }
   }, [result.data]) // eslint-disable-line
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const newBook = subscriptionData.data.bookAdded
+      alert(`a new book added "${newBook.title}" by ${newBook.author.name}`)
+    },
+  })
 
   const [addBook] = useMutation(ADD_BOOK, {
     refetchQueries: [{ query: ALL_AUTHORS }, { query: ALL_BOOKS }],
@@ -59,7 +66,7 @@ const App = () => {
 
       <Authors show={page === 'authors'} authors={authors} />
 
-      <Recommended show={page === 'recommend'} books={books}/>
+      <Recommended show={page === 'recommend'} books={books} />
 
       <Books show={page === 'books'} books={books} />
 
