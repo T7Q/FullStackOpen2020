@@ -29,10 +29,23 @@ const App = () => {
     }
   }, [result.data]) // eslint-disable-line
 
+  const updateCacheWith = (bookAdded) => {
+    const includedIn = (set, object) => set.map((p) => p.id).includes(object.id)
+
+    const dataInStore = client.readQuery({ query: ALL_BOOKS })
+    if (!includedIn(dataInStore.allBooks, bookAdded)) {
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: { allBooks: dataInStore.allBooks.concat(bookAdded) },
+      })
+    }
+  }
+
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
       const newBook = subscriptionData.data.bookAdded
       alert(`a new book added "${newBook.title}" by ${newBook.author.name}`)
+      updateCacheWith(newBook)
     },
   })
 
