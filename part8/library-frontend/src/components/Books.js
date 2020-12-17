@@ -7,7 +7,6 @@ const Books = (props) => {
   const [books, setBooks] = useState([])
   const [booksList, setBooksList] = useState([])
 
-  
   useEffect(() => {
     setBooks(props.books.loading ? [] : props.books.data.allBooks)
     setBooksList(books)
