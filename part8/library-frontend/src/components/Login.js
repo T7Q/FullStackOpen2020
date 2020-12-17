@@ -10,7 +10,6 @@ const Login = ({ show, login }) => {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    console.log("here", username, password)
     login({ variables: { username, password } })
     setUsername('')
     setPassword('')

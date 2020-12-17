@@ -1,11 +1,28 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import Genre from './Genre'
 
 const Books = (props) => {
+  
+  const [genre, setGenre] = useState('all genres')
+  const [books, setBooks] = useState([])
+  const [booksList, setBooksList] = useState([])
+
+  
+  useEffect(() => {
+    setBooks(props.books.loading ? [] : props.books.data.allBooks)
+    setBooksList(books)
+  }, [props.books, books])
+
+  useEffect(() => {
+    if (genre === 'all genres')
+      setBooksList(books)
+    else
+      setBooksList(books.filter(book => book.genres.includes(genre)))
+  }, [genre, books])
+
   if (!props.show) {
     return null
   }
-
-  const books = props.books.loading ? [] : props.books.data.allBooks
 
   return (
     <div>
@@ -18,7 +35,7 @@ const Books = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {books.map((a) => (
+          {booksList.map((a) => (
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
@@ -27,6 +44,7 @@ const Books = (props) => {
           ))}
         </tbody>
       </table>
+      <Genre books={books} genre={genre} setGenre={setGenre}/>
     </div>
   )
 }

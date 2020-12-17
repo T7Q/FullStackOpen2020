@@ -20,7 +20,6 @@ const App = () => {
   const client = useApolloClient()
 
   useEffect(() => {
-    console.log("useeffect", token)
     if (result.data) {
       const token = result.data.login.value
       setToken(token)
