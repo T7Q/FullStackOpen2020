@@ -158,7 +158,6 @@ const resolvers = {
         username: user.username,
         id: user._id,
       }
-      console.log("login backend")
       return { value: jwt.sign(userForToken, config.JWT_SECRET) }
     },
   },
