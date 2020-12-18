@@ -14,17 +14,17 @@ interface ExerciseValues {
 }
 
 const calculateExercises = ( dailyHours: number[], target: number): Result => {
-  const length = dailyHours.length
-  const average = dailyHours.reduce((a, b) => a + b) / length
-  let rating = 1
-  let ratingDescription = "Seems like this was a lazy week! Remember to exercise!"
+  const length = dailyHours.length;
+  const average = dailyHours.reduce((a, b) => a + b) / length;
+  let rating = 1;
+  let ratingDescription = "Seems like this was a lazy week! Remember to exercise!";
 
   if ( average === target) {
-    rating = 3
-    ratingDescription = "Awesome! You've met your daily target!"
+    rating = 3;
+    ratingDescription = "Awesome! You've met your daily target!";
   } else if ( average >= target * 0.5) {
-    rating = 2
-    ratingDescription = 'Not too bad but could be better'
+    rating = 2;
+    ratingDescription = 'Not too bad but could be better';
   }
 
   return {
@@ -40,7 +40,7 @@ const calculateExercises = ( dailyHours: number[], target: number): Result => {
 
 const parseArguments = (args: string[]): ExerciseValues => {
   if (args.length < 4) throw new Error('Not enough arguments');
-  const dailyHours = []
+  const dailyHours = [];
 
   for (let i = 2; i < args.length; i++) {
     if (isNaN(Number(args[i]))) {
@@ -49,12 +49,16 @@ const parseArguments = (args: string[]): ExerciseValues => {
     if (i !== 2) dailyHours.push(Number(args[i]));
   }
   
-  return { dailyHours: dailyHours, target: Number(args[2]) }
-}
+  return { dailyHours: dailyHours, target: Number(args[2]) };
+};
 
 try {
   const { dailyHours, target } = parseArguments(process.argv);
   console.log(calculateExercises(dailyHours, target));
 } catch (e) {
-  console.log('Error, something bad happened, message: ', e.message);
+  if (e instanceof Error) {
+    console.log('Error, something bad happened, message: ', e.message);
+  } else {
+    console.log('Something went wrong');
+  }
 }

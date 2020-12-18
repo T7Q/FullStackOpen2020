@@ -37,15 +37,19 @@ const parseArguments2 = (args: Array<string>): BmiValues => {
     return {
       height: Number(args[2]),
       weight: Number(args[3])
-    }
+    };
   } else {
     throw new Error('Provided values were not numbers!');
   }
-}
+};
 
 try {
   const { height, weight } = parseArguments2(process.argv);
   console.log(calculateBmi(height, weight));
 } catch (e) {
-  console.log('Error, something bad happened, message: ', e.message);
+  if (e instanceof Error) {
+    console.log('Error, something bad happened, message: ', e.message);
+  } else {
+    console.log('Something went wrong');
+  }
 }

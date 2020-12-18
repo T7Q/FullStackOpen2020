@@ -8,7 +8,7 @@ app.get('/hello', (_req, res) => {
 });
 
 app.get('/bmi', (req, res) => {
-  let { height, weight } = req.query;
+  const { height, weight } = req.query;
 
   if (!height || !weight) {
     return res.status(400).json({ error: "malformatted parameters" });
@@ -25,7 +25,7 @@ app.get('/bmi', (req, res) => {
 
   return res.json({ weightNumber, heightNumber, bmi });
 
-})
+});
 
 const PORT = 3003;
 
