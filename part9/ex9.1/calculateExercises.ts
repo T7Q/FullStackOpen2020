@@ -8,6 +8,11 @@ interface Result {
   average: number;
 }
 
+interface ExerciseValues {
+  dailyHours: number[];
+  target: number;
+}
+
 const calculateExercises = ( dailyHours: number[], target: number): Result => {
   const length = dailyHours.length
   const average = dailyHours.reduce((a, b) => a + b) / length
@@ -33,4 +38,23 @@ const calculateExercises = ( dailyHours: number[], target: number): Result => {
   };
 };
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+const parseArguments = (args: string[]): ExerciseValues => {
+  if (args.length < 4) throw new Error('Not enough arguments');
+  const dailyHours = []
+
+  for (let i = 2; i < args.length; i++) {
+    if (isNaN(Number(args[i]))) {
+      throw new Error('Provided values were not numbers!');
+    }
+    if (i !== 2) dailyHours.push(Number(args[i]));
+  }
+  
+  return { dailyHours: dailyHours, target: Number(args[2]) }
+}
+
+try {
+  const { dailyHours, target } = parseArguments(process.argv);
+  console.log(calculateExercises(dailyHours, target));
+} catch (e) {
+  console.log('Error, something bad happened, message: ', e.message);
+}
