@@ -13,7 +13,7 @@ interface ExerciseValues {
   target: number;
 }
 
-const calculateExercises = ( dailyHours: number[], target: number): Result => {
+export const calculateExercises = ( dailyHours: number[], target: number): Result => {
   const length = dailyHours.length;
   const average = dailyHours.reduce((a, b) => a + b) / length;
   let rating = 1;
