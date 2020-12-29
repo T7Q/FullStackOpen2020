@@ -35,7 +35,7 @@ const parseGender = (gender: any): Gender => {
   return gender;
 };
 
-const toNewPatient = (object: any): NewPatient => {
+const toNewPatient = ( object: any ): NewPatient => {
   return {
     name: parseString(object.name),
     dateOfBirth: parseDateOfBirth(object.dateOfBirth),

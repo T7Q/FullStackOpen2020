@@ -1,7 +1,6 @@
 import patients from '../../data/patients';
 
 import { Patient, NonSensitivePatient, NewPatient  } from '../types';
-// import { Patient, NonSensitivePatient, NewPatient } from '../types';
 
 const getPatients = (): Patient[] => {
   return patients;
