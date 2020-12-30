@@ -3,9 +3,11 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
 import { Container, Header, Icon, List } from 'semantic-ui-react';
-import { Patient, Gender, Diagnosis } from '../types';
+import { Patient, Gender } from '../types';
 import { apiBaseUrl } from '../constants';
 import { useStateValue, showPatient } from '../state';
+
+
 
 const genderIcon = (gender: Gender) => {
   switch (gender) {
@@ -15,6 +17,34 @@ const genderIcon = (gender: Gender) => {
       return 'venus';
     case 'other':
       return 'genderless';
+  }
+};
+
+const rankingColor = (ranking: Number) => {
+  switch (ranking) {
+    case 0:
+      return 'green';
+    case 1:
+      return 'yellow';
+    case 2:
+      return 'orange';
+    case 3:
+      return 'red';
+    default:
+      return 'grey';
+  };
+};
+
+const entryTypeIcon = (type: String) => {
+  switch (type) {
+    case 'OccupationalHealthcare':
+      return 'hospital';
+    case 'Hospital':
+      return 'treatment';
+    case 'HealthCheck':
+      return 'doctor';
+    default:
+      return 'doctor';
   }
 };
 
@@ -51,10 +81,12 @@ const PatientPage: React.FC = () => {
       <div> occupation: {patient.occupation }</div>
       <Header>entries</Header>
       {patient.entries.map((entry) =>
-      <div key={entry.id}>
+      <div key={entry.id} style={{border: '1px solid grey', margin: '5px'}}>
         <p>
-          {entry.date} {entry.description}
+          {entry.date} <Icon name={entryTypeIcon(entry.type)} />
         </p>
+        <p>{entry.description} </p>
+        {entry.type === 'HealthCheck' && <Icon name='heart' color={rankingColor(entry.healthCheckRating)} />}
         <List bulleted>
           {entry.diagnosisCodes?.map((code) => (
               <List.Item key={code}>{code} {diagnoses[code].name} </List.Item>
