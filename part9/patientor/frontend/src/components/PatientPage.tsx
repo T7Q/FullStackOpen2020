@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
-import { Container, Header, Icon } from 'semantic-ui-react';
+import { Container, Header, Icon, List } from 'semantic-ui-react';
 import { Patient, Gender } from '../types';
 import { apiBaseUrl } from '../constants';
 import { useStateValue, showPatient } from '../state';
@@ -48,6 +48,21 @@ const PatientPage: React.FC = () => {
       <Header>{patient.name} <Icon name={genderIcon(patient.gender)} /></Header> 
       <div> ssn: {patient.ssn}</div>
       <div> occupation: {patient.occupation }</div>
+      <Header>entries</Header>
+      {patient.entries.map((entry) =>
+      <div key={entry.id}>
+        <p>
+          {entry.date} {entry.description}
+        </p>
+        <List bulleted>
+          {entry.diagnosisCodes?.map((code) => (
+              <List.Item key={code}>{code}</List.Item>
+            ))}
+        </List>
+      </div>
+      )
+
+      }
     </Container>
   );
 };
