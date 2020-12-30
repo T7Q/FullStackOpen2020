@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
 import { Container, Header, Icon, List } from 'semantic-ui-react';
-import { Patient, Gender } from '../types';
+import { Patient, Gender, Diagnosis } from '../types';
 import { apiBaseUrl } from '../constants';
 import { useStateValue, showPatient } from '../state';
 
@@ -22,6 +22,7 @@ const PatientPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [{ patients }, dispatch] = useStateValue();
   const [patient, setPatient] = React.useState<Patient | undefined>();
+  const [{ diagnoses }] = useStateValue();
 
   React.useEffect(() => {
     const patientData = async (patientId: string) => {
@@ -56,7 +57,7 @@ const PatientPage: React.FC = () => {
         </p>
         <List bulleted>
           {entry.diagnosisCodes?.map((code) => (
-              <List.Item key={code}>{code}</List.Item>
+              <List.Item key={code}>{code} {diagnoses[code].name} </List.Item>
             ))}
         </List>
       </div>
