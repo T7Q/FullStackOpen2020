@@ -21,8 +21,8 @@ This course serves as an introduction to modern web application development with
 
 - [x] Part 7 - React router, custom hooks, styling app with CSS and webpack
 
-- [ ] Part 8 - GraphQL
+- [x] Part 8 - GraphQL
 
-- [ ] Part 9 - Typescript
+- [x] Part 9 - Typescript
 
 - [ ] Part 10 - React Native
