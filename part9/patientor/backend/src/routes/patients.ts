@@ -24,7 +24,7 @@ router.post('/', (req, res) => {
   }
 });
 
-router.post('/:id', (req, res) => {
+router.post('/:id/entries', (req, res) => {
   try {
     const entry = toNewEntry(req.body);
     const patient = patientsService.addPatientEntry(req.params.id, entry);
@@ -33,6 +33,6 @@ router.post('/:id', (req, res) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     res.status(400).send(e.message);
   }
-})
+});
 
 export default router;

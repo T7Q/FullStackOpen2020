@@ -36,7 +36,6 @@ const addPatientEntry = (id: string, entry: NewEntry): Entry | undefined => {
   }
 
   const newEntry = {...entry, id: uuidv4()};
-  
   patient.entries.push(newEntry);
   return newEntry;
 };

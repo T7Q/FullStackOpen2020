@@ -18,6 +18,10 @@ export type Action =
       type: "SET_DIAGNOSIS_LIST";
       payload: Diagnosis[];
     };
+  // | {
+  //   type: 'UPDATE_PATIENT_INFO';
+  //   payload: Patient;
+  // };
 
 export const setDiagnosisList = (diagnoses: Diagnosis[]): Action => {
   return {
@@ -84,3 +88,7 @@ export const showPatient = (patient: Patient): Action => {
     payload: patient
   };
 };
+
+// export const updatePatient= (patient: Patient): Action => {
+//   return { type: 'UPDATE_PATIENT_INFO', payload: patient };
+// };

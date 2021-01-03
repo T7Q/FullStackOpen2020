@@ -1,4 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/restrict-plus-operands, @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { NewPatient, Gender, NewEntry, HealthCheckRating } from "./types";
 
 const isString = (text: any): text is string => {
@@ -23,7 +25,7 @@ const parseString = (name: any): string => {
 
 const parseDate = (date: any): string => {
   if (!date || !isString(date) || !isDate(date)) {
-    throw new Error("Incorrect or missing date of birth: " + date);
+    throw new Error("Incorrect or missing date: " + date);
   }
   return date;
 };
@@ -42,13 +44,14 @@ const isHealthCheckRating = (rating: number): rating is HealthCheckRating => {
 const parseHealthCheckRating = (rating: any): HealthCheckRating => {
   if (rating === 0) {
     return 0;
-  };
+  }
   if (!rating || isNaN(parseInt(rating)) || !isHealthCheckRating(rating)) {
     throw new Error('Healt Check Rating should be from 0 to 3');
-  };
+  }
   return Number(rating);
 };
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const toNewPatient = ( object: any ): NewPatient => {
   return {
     name: parseString(object.name),
@@ -59,52 +62,52 @@ export const toNewPatient = ( object: any ): NewPatient => {
   };
 };
 
-const parseDiagnosisCodes = (diagnosisCodes: any): string[] => {
-  let codes = [];
-  if (diagnosisCodes) {
-    codes = diagnosisCodes.map(
-        (code: any) => parseString(code)
-    );
-  };
-  return codes;
+const isArrayOfStrings = (codes: any[]): boolean => {
+  return codes.find(c => !isString(c)) === undefined;
 };
 
+const parseDiagnosisCodes = (diagnosisCodes: any): string[] => {
+  if (!diagnosisCodes || diagnosisCodes === undefined) {
+    return [];
+  }
+  if (Array.isArray(diagnosisCodes) && !isArrayOfStrings(diagnosisCodes)) {
+    throw new Error('Incorrect diagnosis codes');
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return diagnosisCodes;
+};
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const toNewEntry = (object: any): NewEntry => {
   const baseEntry = {
-    type: object.type,
+    type: parseString(object.type),
     date: parseDate(object.date),
     description: parseString(object.description),
     specialist: parseString(object.specialist),
     diagnosisCodes: parseDiagnosisCodes(object.diagnosisCodes),
   } as NewEntry;
 
-  // if (object.diagnosisCodes) {
-  //   baseEntry.diagnosisCodes = object.diagnosisCodes.map(
-  //       (code: any) => parseString(code)
-  //   );
-  // };
-
   switch(baseEntry.type) {
     case 'HealthCheck':
-        return {
-            ...baseEntry,
-            healthCheckRating: parseHealthCheckRating(object.healthCheckRating),
-        };
+      return {
+          ...baseEntry,
+          healthCheckRating: parseHealthCheckRating(object.healthCheckRating),
+      };
     case 'OccupationalHealthcare':
-        if (object.sickLeave) {
-            return {
-                ...baseEntry,
-                employerName: parseString(object.employerName),
-                sickLeave: {
-                    startDate: parseDate(object.sickLeave.startDate),
-                    endDate: parseDate(object.sickLeave.endDate)
-                }
-            };
-        }
+      if (object.sickLeave) {
         return {
             ...baseEntry,
             employerName: parseString(object.employerName),
+            sickLeave: {
+                startDate: parseDate(object.sickLeave.startDate),
+                endDate: parseDate(object.sickLeave.endDate),
+            }
         };
+      }
+      return {
+          ...baseEntry,
+          employerName: parseString(object.employerName),
+      };
     case 'Hospital':
         return {
             ...baseEntry,
@@ -115,5 +118,5 @@ export const toNewEntry = (object: any): NewEntry => {
         };
     default:
         throw new Error('incorrect or missing type: ' + object.type);
-  };
+  }
 };
