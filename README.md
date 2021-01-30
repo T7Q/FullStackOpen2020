@@ -5,7 +5,7 @@ This repository contains exercise solutions to the 2020 edition of the [Full Sta
 This course serves as an introduction to modern web application development with JavaScript. The main focus is on building single page applications with ReactJS that use REST APIs built with Node.js. The course also contains a section on GraphQL, a modern alternative to REST APIs.
 
 # Course certificate
-[certificate](https://github.com/T7Q/FullStackOpen2020/blob/master/certificate-fullstack.png)
+![certificate](https://github.com/T7Q/FullStackOpen2020/blob/master/certificate-fullstack.png)
 
 # Course Content
 - [x] Part 0 - Fundamentals of Web apps
